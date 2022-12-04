@@ -6,11 +6,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,8 +28,8 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 
 public class MainFrame extends JFrame {
-    final private Font mainFont = new Font("Segoe print", Font.BOLD, 18);
-    JTextField tfTipoDoc ,tfFirstName, tfLastName;
+    final private Font mainFont = new Font("Segoe print", Font.BOLD, 14);
+    JTextField tfTipoDoc, tfSaf, tfAno, tfCaja, tfUsuario, tfLastName, tfF_Ini,tfF_Fin, tfCan_im, tfCan_car;
     public void initialize(){
 
         JLabel lbTipoDoc = new JLabel("Tipo Doc");
@@ -40,11 +38,29 @@ public class MainFrame extends JFrame {
         tfTipoDoc = new JTextField();
         tfTipoDoc.setFont(mainFont);
 
-        JLabel lbFirstName = new JLabel("First Name");
-        lbFirstName.setFont(mainFont);
+        JLabel lbSaf = new JLabel("SAF");
+        lbSaf.setFont(mainFont);
 
-        tfFirstName = new JTextField();
-        tfFirstName.setFont(mainFont);
+        tfSaf = new JTextField();
+        tfSaf.setFont(mainFont);
+
+        JLabel lbAno = new JLabel("Año");
+        lbAno.setFont(mainFont);
+
+        tfAno = new JTextField();
+        tfAno.setFont(mainFont);
+
+        JLabel lbCaja = new JLabel("N° de Caja");
+        lbCaja.setFont(mainFont);
+
+        tfCaja = new JTextField();
+        tfCaja.setFont(mainFont);
+
+        JLabel lbUsuario = new JLabel("Usuario");
+        lbUsuario.setFont(mainFont);
+
+        tfUsuario = new JTextField();
+        tfUsuario.setFont(mainFont);
 
         JLabel lbLastName = new JLabel("Last Name");
         lbLastName.setFont(mainFont);
@@ -53,13 +69,20 @@ public class MainFrame extends JFrame {
         tfLastName.setFont(mainFont);
 
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(6, 1, 5, 5));
+        formPanel.setLayout(new GridLayout(0, 4, 5, 5));
+        formPanel.add(lbUsuario);
+        formPanel.add(tfUsuario);
         formPanel.add(lbTipoDoc);
         formPanel.add(tfTipoDoc);
-        formPanel.add(lbFirstName);
-        formPanel.add(tfFirstName);
+        formPanel.add(lbSaf);
+        formPanel.add(tfSaf);
         formPanel.add(lbLastName);
         formPanel.add(tfLastName);
+        formPanel.add(lbAno);
+        formPanel.add(tfAno);
+        formPanel.add(lbCaja);
+        formPanel.add(tfCaja);
+       
         
 
         JLabel lbWelcome = new JLabel();
@@ -72,7 +95,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                String firstName = tfFirstName.getText();
+                String firstName = tfUsuario.getText();
                 String lastName = tfLastName.getText();
                 lbWelcome.setText("Hello " + firstName + " " + lastName);
             }
@@ -86,7 +109,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                tfFirstName.setText("");
+                tfUsuario.setText("");
                 tfLastName.setText("");
                 lbWelcome.setText("");
             }                 
@@ -108,23 +131,40 @@ public class MainFrame extends JFrame {
                                         
                     PDPageContentStream contenido = new PDPageContentStream(miPDF, pagina);
                     String tipDoc = tfTipoDoc.getText();
-                    String nombre = tfFirstName.getText();
+                    String saf = tfSaf.getText();
+                    String ano = tfAno.getText();
+                    String usuario = tfUsuario.getText();
                     
                     contenido.drawImage(miImg, 0,0,565,792);
                                                      
                     contenido.beginText();
-                    contenido.setFont(PDType1Font.COURIER_BOLD, 16);
-                    contenido.newLineAtOffset(170,pagina.getMediaBox().getHeight()-170);
+                    contenido.setFont(PDType1Font.COURIER_BOLD, 14);
+                    contenido.newLineAtOffset(170,pagina.getMediaBox().getHeight()-171);
                     contenido.showText(tipDoc);
-                    contenido.newLineAtOffset(0, -30); 
-                    contenido.showText(nombre);                
-                
+                    contenido.endText();
+
+                    contenido.beginText();
+                    contenido.setFont(PDType1Font.COURIER_BOLD, 14);    
+                    contenido.newLineAtOffset(270,670);
+                    contenido.showText(saf);
+                    contenido.endText();
+
+                    contenido.beginText();
+                    contenido.setFont(PDType1Font.COURIER_BOLD, 14);
+                    contenido.newLineAtOffset(350, 670);
+                    contenido.showText(ano);
+                    contenido.endText();
+
+                    contenido.beginText();
+                    contenido.setFont(PDType1Font.COURIER_BOLD, 14);
+                    contenido.newLineAtOffset(165,645); 
+                    contenido.showText(usuario);                                
                     contenido.endText();
                                                   
                     contenido.close();
                                
                     
-                    File file = new File(tfFirstName.getText()+".pdf");
+                    File file = new File(tfUsuario.getText()+".pdf");
                     System.out.println("Sample file saved at : " + file.getAbsolutePath());
       
 
@@ -144,7 +184,7 @@ public class MainFrame extends JFrame {
         
 
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 4, 5, 5));
+        buttonsPanel.setLayout(new GridLayout(1, 3, 5, 5));
         buttonsPanel.add(btnOK);
         buttonsPanel.add(btnClear);
         buttonsPanel.add(btnPDF);
